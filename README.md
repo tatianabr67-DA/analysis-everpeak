@@ -1,58 +1,48 @@
-# analysis-everpeak
-# 📊 EverPeak Retail Analysis – Sprint 6 & 7
+# 📊 Análisis Exploratorio y Segmentación de Clientes — ConnectaTel
 
-Este repositorio contiene el proyecto de análisis exploratorio de datos (EDA), limpieza y tratamiento de atípicos para la empresa de e-commerce **EverPeak – SilverBasket**, desarrollado como parte del programa de Analista de Datos en TripleTen.
-
-El objetivo principal es auditar la calidad de los datos transaccionales, construir un pipeline de limpieza reproducible y generar insights estratégicos para el área de operaciones y mercadotecnia.
+## 🎯 Objetivo del Proyecto
+El objetivo principal de este proyecto es analizar el comportamiento de consumo de los clientes de la empresa de telecomunicaciones **ConnectaTel** para identificar patrones de uso, evaluar la distribución demográfica y segmentar la cartera de usuarios. Este análisis proporciona recomendaciones estratégicas orientadas a reducir el riesgo de cancelación (*churn*) y optimizar las ofertas comerciales.
 
 ---
 
-## 📂 Contenido del Repositorio
-
-- `Sprint07_Webinar11_students_version.ipynb`: Notebook principal con el flujo completo de análisis:
-  - Carga y diagnóstico estructural del dataset.
-  - Limpieza de datos (tratamiento de *sentinels*, nulos y conversión de tipos).
-  - Feature Engineering (Segmentación por volumen y método de pago).
-  - Análisis de distribuciones y detección formal de outliers.
-  - Winsorización al percentil 99 (`p99`) para estabilizar métricas ejecutivas.
+## 📁 Datasets Utilizados
+El análisis combina tres fuentes de datos principales:
+- `plans.csv`: Información sobre los planes actuales (precios, minutos, mensajes y MB incluidos, además de costos extra).
+- `users.csv`: Datos demográficos y de registro de los usuarios (ID, nombre, edad, ciudad, fecha de registro, plan contratado y fecha de cancelación).
+- `calls.csv` / `messages.csv` / `internet.csv`: Registros de consumo mensual por cliente.
 
 ---
 
-## ▶️ Cómo ejecutar el Notebook en Google Colab
-
-Puedes abrir e interactuar directamente con el notebook sin necesidad de instalar entornos locales utilizando el siguiente botón:
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatianabr67-DA/analysis-everpeak/blob/main/Sprint07_Webinar11_students_version.ipynb)
-
-> **Nota:** Si prefieres abrirlo desde la interfaz de Google Colab:
-> 1. Ve a [colab.research.google.com](https://colab.research.google.com).
-> 2. Pestaña **GitHub** $\rightarrow$ Escribe el usuario: `tatianabr67-DA`.
-> 3. Selecciona el repositorio `tatianabr67-DA/analysis-everpeak` y la rama `main`.
-> 4. Haz clic sobre el archivo `Sprint07_Webinar11_students_version.ipynb`.
-
----
-
-## 📘 Cómo reproducir el análisis
-
-1. Abre el notebook usando el enlace superior de Colab o clonando el repositorio localmente.
-2. Ejecuta las celdas de forma secuencial (`Shift + Enter`).
-3. El script carga automáticamente los datos y ejecuta el pipeline de limpieza y visualizaciones con `Pandas`, `NumPy`, `Matplotlib` y `Seaborn`.
+## 🛠️ Etapas del Análisis
+1. **Preparación y Limpieza de Datos:**
+   - Tratamiento de valores ausentes en variables clave (`city`, `churn_date`).
+   - Identificación e imputación de registros atípicos (llamadas de 0 minutos y datos cero).
+   - Unificación de datasets mediante integraciones relacionales (`merge`).
+2. **Análisis Exploratorio de Datos (EDA):**
+   - Cálculo de estadísticas descriptivas (tendencia central, dispersión e IQR).
+   - Identificación de sesgos y distribuciones de consumo.
+3. **Segmentación de Clientes:**
+   - **Segmentación por Uso (`grupo_uso`):** Clasificación en *Bajo uso*, *Uso medio* y *Alto uso* con evaluación condicional vectorizada (`np.select`).
+   - **Segmentación Demográfica (`grupo_edad`):** Clasificación por cohortes (*Joven*, *Adulto*, *Adulto Mayor*).
+4. **Visualización y Reporte Ejecutivo:**
+   - Gráficos de barras etiquetados (`sns.countplot`) para comunicación ejecutiva.
+   - Diagnóstico final y recomendaciones de negocio orientadas a la retención y migración de planes.
 
 ---
 
-## 🛠️ Herramientas Utilizadas
+## 🚀 Guía de Reproducción y Ejecución
 
-- **Lenguaje:** Python 3
-- **Librerías de Procesamiento:** Pandas, NumPy
-- **Visualización de Datos:** Matplotlib, Seaborn
-- **Entorno & Versionado:** Google Colab, GitHub
+Para explorar el proyecto y ejecutar el código interactivo:
 
----
-
-## 💡 Hallazgos y Conclusiones Clave
-
-- **Estabilización de Métricas:** Se detectó un sesgo positivo (*right-skewed*) significativo en el valor de las órdenes (`order_value`). La aplicación de Winsorización (cap al $P_{99}$) permitió proteger la representatividad de compras VIP sin permitir que valores extremos distorsionaran la media del negocio.
-- **Segmentación Operativa:** Mediante la función `.apply(axis=1)`, se dividió la cartera en 4 cuadrantes comerciales según edad y volumen de compra, optimizando el canal de atención para clientes de alto volumen (*High Volume*).
+1. **Apertura Directa en Google Colab:**
+   - Haz clic en el botón **Open in Colab** ubicado en la parte superior del notebook [`S7_Version_Estudiante_Project_ConnectaTel.ipynb`](./S7_Version_Estudiante_Project_ConnectaTel.ipynb).
+2. **Ejecución del Código:**
+   - Ejecuta las celdas en orden secuencial (`Shift + Enter` o clic en el icono de reproducción).
+   - Asegúrate de contar con las librerías `pandas`, `numpy`, `matplotlib` y `seaborn` (ya preinstaladas en el entorno de Colab).
 
 ---
-*Proyecto desarrollado por **Denisse Tatiana Baltazar Romero** – Analista de Datos Junior.*
+
+## 💡 Principales Conclusiones
+- **Predominio del Uso Medio:** El 73.58% de los usuarios mantiene un consumo moderado, constituyendo el núcleo operativo de la empresa.
+- **Riesgo de Cancelación:** Se aisló un 19.45% de clientes con bajo consumo, identificándolos como público prioritario para campañas de reactivación.
+- **Perfil Demográfico Maduro:** El 81% de la base se concentra en Adultos (50.45%) y Adultos Mayores (30.55%), sugiriendo la necesidad de simplificar la oferta comercial de voz y soporte.
